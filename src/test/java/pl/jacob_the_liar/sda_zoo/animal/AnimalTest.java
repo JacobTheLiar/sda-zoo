@@ -27,7 +27,7 @@ public class AnimalTest {
     private final IDateProvider dateProvider = mock(IDateProvider.class);
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         System.setOut(new PrintStream(outContent));
 
         final IBear bear = mock(IBear.class);
@@ -49,10 +49,7 @@ public class AnimalTest {
     @Test
     public void animal_is_alive_if_he_has_eaten_less_then_10_days_ago_test() {
         LocalDateTime date = LocalDateTime.now().minusDays(9);
-
         Mockito.when(dateProvider.getDateTime()).thenReturn(date);
-
-
         IAnimal bear = new BrownBear(dateProvider);
 
         boolean isAlive =   bear.isAlive();
@@ -62,11 +59,13 @@ public class AnimalTest {
 
     @Test
     public void animal_is_dead_if_he_has_eaten_greater_then_10_days_ago_test() {
-        LocalDateTime date = LocalDateTime.now().minusDays(10);
+        LocalDateTime date = LocalDateTime.now();
         Mockito.when(dateProvider.getDateTime()).thenReturn(date);
 
         IAnimal bear = new BrownBear(dateProvider);
 
+        date = date.plusDays(10);
+        Mockito.when(dateProvider.getDateTime()).thenReturn(date);
         boolean isAlive =   bear.isAlive();
 
         assertFalse(isAlive);
@@ -76,8 +75,8 @@ public class AnimalTest {
     public void animal_is_dead_after_last_eat_14_days_ago_test(){
 
         LocalDateTime date = LocalDateTime.now();
-        IAnimal bear = new BrownBear(dateProvider);
         Mockito.when(dateProvider.getDateTime()).thenReturn(date);
+        IAnimal bear = new BrownBear(dateProvider);
 
 
         date = date.plusDays(2);

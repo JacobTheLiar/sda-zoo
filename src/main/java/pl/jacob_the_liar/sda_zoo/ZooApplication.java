@@ -1,8 +1,6 @@
 package pl.jacob_the_liar.sda_zoo;
 
 
-
-//import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.jacob_the_liar.sda_zoo.db.IZooDatabase;
@@ -13,13 +11,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 
-//@Slf4j
+
 public class ZooApplication {
 
     private static final Logger log
             = LoggerFactory.getLogger(ZooApplication.class);
 
-    private BufferedReader inputReader;
     private IZoo zoo;
 
 
@@ -28,7 +25,6 @@ public class ZooApplication {
         log.debug("start()");
         initializeZoo();
 
-        inputReader = new BufferedReader(new InputStreamReader(System.in));
 
         log.info("application lunched");
         String choose;
@@ -60,7 +56,8 @@ public class ZooApplication {
 
     private void printAnimalDetails() {
         log.debug("printAnimalDetails()");
-        zoo.getAnimalsCount().forEach((name, cnt) -> printAnimalDetailItem(name, cnt));
+        zoo.getAnimalsCount()
+                .forEach((name, cnt) -> printAnimalDetailItem(name, cnt));
     }
 
     private void printAnimalDetailItem(String name, Integer count) {
@@ -72,7 +69,6 @@ public class ZooApplication {
         log.debug("initializeZoo()");
         IZooDatabase zooDatabase = new ZooListDatabase();
         zoo = zooDatabase.getZooDatabase();
-
     }
 
     private void writeLn(String s) {
@@ -87,6 +83,7 @@ public class ZooApplication {
         log.debug("readLine()");
         String inputText = "";
         try {
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
             inputText = inputReader.readLine().trim();
             log.info("user input: '"+inputText+"'");
         } catch (Exception e){
